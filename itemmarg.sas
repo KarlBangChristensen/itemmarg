@@ -43,7 +43,7 @@ the data set 'data' contains items.
 	%put &items; 
 	%put ---------------------------------------------------------;
 
-	ODS SELECT NONE;
+	*ODS SELECT NONE;
 
 	proc freq data=&data; 
 		%do _i=1 %to &_nitems;
@@ -64,7 +64,7 @@ the data set 'data' contains items.
 		set _t1-_t&_nitems;
 	run;
 
-	ODS SELECT ALL;
+	*ODS SELECT ALL;
 
 	proc gchart data=_new;
 		vbar item / discrete subgroup=score
