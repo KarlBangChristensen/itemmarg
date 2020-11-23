@@ -42,9 +42,13 @@ the data set 'data' contains items.
 	%put ;
 	%put &items; 
 	%put ---------------------------------------------------------;
-
-	*ODS SELECT NONE;
-
+	
+	%if %upcase(%left(%trim(&tables)))=NO %then %do;
+		ODS SELECT NONE;
+	%end;
+	%else %do;
+		%put printing tables;
+	%end;
 	proc freq data=&data; 
 		%do _i=1 %to &_nitems;
 			ods output freq.table&_i..onewayfreqs=_t&_i.;
@@ -63,9 +67,12 @@ the data set 'data' contains items.
 	data _new;
 		set _t1-_t&_nitems;
 	run;
-
-	*ODS SELECT ALL;
-
+	%if %upcase(%left(%trim(&tables)))=NO %then %do;
+		ODS SELECT ALL;
+	%end;
+	%else %do;
+		%put ---------------------------------------------------------;
+	%end;
 	proc gchart data=_new;
 		vbar item / discrete subgroup=score
 		group=item g100 nozero
